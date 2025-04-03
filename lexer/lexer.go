@@ -1,5 +1,7 @@
 package lexer
 
+import "strconv"
+
 type TokenType int
 
 const (
@@ -13,20 +15,40 @@ type Token struct {
 }
 
 type Lexer struct {
-	input    string
-	position int
+	input           string
+	currentPosition int
+	peekPosition    int
 }
 
 func New(input string) *Lexer {
 	return &Lexer{
-		input:    input,
-		position: 0,
+		input:           input,
+		currentPosition: 0,
+		peekPosition:    1,
 	}
 }
 
 func (l *Lexer) NextToken() Token {
-	return Token{
-		Literal: string(l.input[l.position]),
-		Type:    INT,
+	if isDigit(l.input[l.currentPosition]) {
+		return Token{
+			Literal: l.getDigits(),
+			Type:    INT,
+		}
 	}
+	return Token{
+		Literal: "",
+		Type:    EOF,
+	}
+}
+
+func (l *Lexer) getDigits() string {
+	for len(l.input) > l.peekPosition && isDigit(l.input[l.peekPosition]) {
+		l.peekPosition++
+	}
+	return string(l.input[l.currentPosition:l.peekPosition])
+}
+
+func isDigit(b byte) bool {
+	_, err := strconv.Atoi(string(b))
+	return err == nil
 }
