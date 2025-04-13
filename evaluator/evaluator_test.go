@@ -18,6 +18,11 @@ func TestEval(t *testing.T) {
 			want:  "123",
 		},
 		{
+			name:  "+と単一の整数",
+			input: "+123",
+			want:  "123",
+		},
+		{
 			name:  "2つの正の整数の足し算",
 			input: "123+456",
 			want:  "579",

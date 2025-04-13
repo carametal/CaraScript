@@ -26,17 +26,20 @@ func (i *IntegerLiteral) String() string {
 	return strconv.FormatInt(i.Value, 10)
 }
 
-type InfixLiteral struct {
+type InfixExpression struct {
 	Left     Expression
 	Operator string
 	Right    Expression
 }
 
-func (il *InfixLiteral) expresssionNode() {}
+func (il *InfixExpression) expresssionNode() {}
 
-func (il *InfixLiteral) String() string {
+func (il *InfixExpression) String() string {
 	if il.Left == nil && il.Right == nil {
 		return il.Operator
+	}
+	if il.Left == nil {
+		return il.Right.String()
 	}
 	return il.Left.String() + " " + il.Operator + " " + il.Right.String()
 }
@@ -69,19 +72,24 @@ func (p *Parser) ParseProgram() *Program {
 	for p.currentToken.Type != lexer.EOF {
 		switch p.currentToken.Type {
 		case lexer.INT:
-			exp, isInfixLiteral := program.Expression.(*InfixLiteral)
+			exp, isInfixLiteral := program.Expression.(*InfixExpression)
 			if isInfixLiteral {
 				exp.Right = getIntegerLiteral(p.currentToken.Literal)
 			} else {
 				program.Expression = getIntegerLiteral(p.currentToken.Literal)
 			}
 		case lexer.PLUS:
-			left := program.Expression
+			left, isLeftInteger := program.Expression.(*IntegerLiteral)
 			operator := p.currentToken.Literal
-			program.Expression = &InfixLiteral{
-				Left:     left,
-				Operator: operator,
-				Right:    nil,
+			if !isLeftInteger {
+				program.Expression = &InfixExpression{
+					Operator: operator,
+				}
+			} else {
+				program.Expression = &InfixExpression{
+					Left:     left,
+					Operator: operator,
+				}
 			}
 		}
 		p.currentToken = p.l.NextToken()

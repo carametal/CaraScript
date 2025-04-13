@@ -23,18 +23,25 @@ func Eval(node parser.Node) Object {
 		return Eval(node.Expression)
 	case *parser.IntegerLiteral:
 		return &Integer{Value: node.Value}
-	case *parser.InfixLiteral:
-		return evalInfixLiretal(node)
+	case *parser.InfixExpression:
+		return evalInfixExpression(node)
 	default:
 		return nil
 	}
 }
 
-func evalInfixLiretal(il *parser.InfixLiteral) Object {
+func evalInfixExpression(il *parser.InfixExpression) Object {
 	switch il.Operator {
 	case "+":
-		l, _ := strconv.ParseInt(il.Left.String(), 10, 64)
-		r, _ := strconv.ParseInt(il.Right.String(), 10, 64)
+		var l, r int64
+		var err error
+		if il.Left != nil {
+			l, _ = strconv.ParseInt(il.Left.String(), 10, 64)
+		}
+		r, err = strconv.ParseInt(il.Right.String(), 10, 64)
+		if err != nil {
+			panic("InfixLiteral.Rightは必須です。")
+		}
 		return &Integer{
 			Value: l + r,
 		}

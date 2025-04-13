@@ -1,7 +1,6 @@
 package lexer
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -68,7 +67,6 @@ func (l *Lexer) getDigits() string {
 
 func (l *Lexer) skipWhitespaces() {
 	for len(l.input) > l.currentPosition && l.input[l.currentPosition] == byte(' ') {
-		fmt.Println("skip", l.input[l.currentPosition])
 		l.currentPosition++
 		l.peekPosition++
 	}
