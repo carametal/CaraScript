@@ -32,6 +32,21 @@ func TestEval(t *testing.T) {
 			input: "123 + 456",
 			want:  "579",
 		},
+		{
+			name:  "2つの正の整数の引き算",
+			input: "123-24",
+			want:  "99",
+		},
+		{
+			name:  "スペースを含む2つの正の整数の引き算",
+			input: "123 - 24",
+			want:  "99",
+		},
+		{
+			name:  "差が負の整数になる2つの正の整数の引き算",
+			input: "123-456",
+			want:  "-333",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -9,6 +9,7 @@ type TokenType int
 const (
 	INT = iota
 	PLUS
+	MINUS
 	EOF
 )
 
@@ -45,12 +46,20 @@ func (l *Lexer) NextToken() Token {
 			Type:    INT,
 		}
 	}
-	if l.input[l.currentPosition] == byte('+') {
+	switch l.input[l.currentPosition] {
+	case byte('+'):
 		l.currentPosition++
 		l.peekPosition++
 		return Token{
 			Literal: "+",
 			Type:    PLUS,
+		}
+	case byte('-'):
+		l.currentPosition++
+		l.peekPosition++
+		return Token{
+			Literal: "-",
+			Type:    MINUS,
 		}
 	}
 	panic("Lexer.NextToken()で予想外の挙動をしています。")

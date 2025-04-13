@@ -34,6 +34,16 @@ func TestParseProgram(t *testing.T) {
 			input: "123+456",
 			want:  "123 + 456",
 		},
+		{
+			name:  "単一のマイナストークン",
+			input: "-",
+			want:  "-",
+		},
+		{
+			name:  "2つの整数の引き算",
+			input: "123-24",
+			want:  "123 - 24",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
