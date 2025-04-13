@@ -37,6 +37,12 @@ func TestNextToken(t *testing.T) {
 			wantTokenType: INT,
 			wantLiteral:   "12",
 		},
+		{
+			name:          "単一のプラストークン",
+			input:         "+",
+			wantTokenType: PLUS,
+			wantLiteral:   "+",
+		},
 	}
 
 	for _, tt := range tests {

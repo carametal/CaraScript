@@ -13,9 +13,19 @@ func TestEval(t *testing.T) {
 		want  string
 	}{
 		{
-			name:  "正の整数",
+			name:  "単一の正の整数",
 			input: "123",
 			want:  "123",
+		},
+		{
+			name:  "2つの正の整数の足し算",
+			input: "123+456",
+			want:  "579",
+		},
+		{
+			name:  "スペースを含む2つの正の整数の足し算",
+			input: "123 + 456",
+			want:  "579",
 		},
 	}
 	for _, tt := range tests {
@@ -24,7 +34,7 @@ func TestEval(t *testing.T) {
 			p := parser.New(l)
 			got := Eval(p.ParseProgram())
 			if got.String() != tt.want {
-				t.Fatalf("Eval() want %s, got %s", "1", got.String())
+				t.Fatalf("Eval() want %s, got %s", tt.want, got.String())
 			}
 		})
 	}

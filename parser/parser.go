@@ -26,6 +26,21 @@ func (i *IntegerLiteral) String() string {
 	return strconv.FormatInt(i.Value, 10)
 }
 
+type InfixLiteral struct {
+	Left     Expression
+	Operator string
+	Right    Expression
+}
+
+func (il *InfixLiteral) expresssionNode() {}
+
+func (il *InfixLiteral) String() string {
+	if il.Left == nil && il.Right == nil {
+		return il.Operator
+	}
+	return il.Left.String() + " " + il.Operator + " " + il.Right.String()
+}
+
 type Program struct {
 	Expression Expression
 }
@@ -50,14 +65,34 @@ func New(l *lexer.Lexer) *Parser {
 }
 
 func (p *Parser) ParseProgram() *Program {
-	if p.currentToken.Type == lexer.INT {
-		value, err := strconv.ParseInt(p.currentToken.Literal, 10, 64)
-		if err != nil {
-			return nil
+	program := &Program{}
+	for p.currentToken.Type != lexer.EOF {
+		switch p.currentToken.Type {
+		case lexer.INT:
+			exp, isInfixLiteral := program.Expression.(*InfixLiteral)
+			if isInfixLiteral {
+				exp.Right = getIntegerLiteral(p.currentToken.Literal)
+			} else {
+				program.Expression = getIntegerLiteral(p.currentToken.Literal)
+			}
+		case lexer.PLUS:
+			left := program.Expression
+			operator := p.currentToken.Literal
+			program.Expression = &InfixLiteral{
+				Left:     left,
+				Operator: operator,
+				Right:    nil,
+			}
 		}
-		return &Program{
-			Expression: &IntegerLiteral{Value: value},
-		}
+		p.currentToken = p.l.NextToken()
 	}
-	return &Program{}
+	return program
+}
+
+func getIntegerLiteral(literal string) *IntegerLiteral {
+	value, err := strconv.ParseInt(literal, 10, 64)
+	if err != nil {
+		panic("strconv.ParseInt()でエラーが発生しました。")
+	}
+	return &IntegerLiteral{Value: value}
 }
