@@ -49,6 +49,12 @@ func TestNextToken(t *testing.T) {
 			wantTokenType: MINUS,
 			wantLiteral:   "-",
 		},
+		{
+			name:          "単一のマルチトークン",
+			input:         "*",
+			wantTokenType: MULTI,
+			wantLiteral:   "*",
+		},
 	}
 
 	for _, tt := range tests {

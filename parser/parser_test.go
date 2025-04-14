@@ -44,6 +44,16 @@ func TestParseProgram(t *testing.T) {
 			input: "123-24",
 			want:  "123 - 24",
 		},
+		{
+			name:  "単一のマルチトークン",
+			input: "*",
+			want:  "*",
+		},
+		{
+			name:  "2つの整数の掛け算",
+			input: "123*24",
+			want:  "123 * 24",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

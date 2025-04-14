@@ -10,6 +10,7 @@ const (
 	INT = iota
 	PLUS
 	MINUS
+	MULTI
 	EOF
 )
 
@@ -61,7 +62,15 @@ func (l *Lexer) NextToken() Token {
 			Literal: "-",
 			Type:    MINUS,
 		}
+	case byte('*'):
+		l.currentPosition++
+		l.peekPosition++
+		return Token{
+			Literal: "*",
+			Type:    MULTI,
+		}
 	}
+
 	panic("Lexer.NextToken()で予想外の挙動をしています。")
 }
 

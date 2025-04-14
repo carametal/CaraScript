@@ -78,7 +78,7 @@ func (p *Parser) ParseProgram() *Program {
 			} else {
 				program.Expression = getIntegerLiteral(p.currentToken.Literal)
 			}
-		case lexer.PLUS, lexer.MINUS:
+		case lexer.PLUS, lexer.MINUS, lexer.MULTI:
 			// case lexer.PLUS:
 			left, isLeftInteger := program.Expression.(*IntegerLiteral)
 			operator := p.currentToken.Literal

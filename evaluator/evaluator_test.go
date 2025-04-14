@@ -47,6 +47,11 @@ func TestEval(t *testing.T) {
 			input: "123-456",
 			want:  "-333",
 		},
+		{
+			name:  "2つの正の整数の掛け算",
+			input: "123*456",
+			want:  "56088",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

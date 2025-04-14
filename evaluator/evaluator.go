@@ -49,6 +49,10 @@ func evalInfixExpression(il *parser.InfixExpression) Object {
 		return &Integer{
 			Value: l - r,
 		}
+	case "*":
+		return &Integer{
+			Value: l * r,
+		}
 	default:
 		panic("Evalで意図しない挙動が発生しています。")
 	}
