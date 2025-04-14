@@ -11,6 +11,7 @@ const (
 	PLUS
 	MINUS
 	MULTI
+	DIVIDE
 	EOF
 )
 
@@ -68,6 +69,13 @@ func (l *Lexer) NextToken() Token {
 		return Token{
 			Literal: "*",
 			Type:    MULTI,
+		}
+	case byte('/'):
+		l.currentPosition++
+		l.peekPosition++
+		return Token{
+			Literal: "/",
+			Type:    DIVIDE,
 		}
 	}
 

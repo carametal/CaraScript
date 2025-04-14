@@ -55,6 +55,12 @@ func TestNextToken(t *testing.T) {
 			wantTokenType: MULTI,
 			wantLiteral:   "*",
 		},
+		{
+			name:          "単一のディバイドトークン",
+			input:         "/",
+			wantTokenType: DIVIDE,
+			wantLiteral:   "/",
+		},
 	}
 
 	for _, tt := range tests {

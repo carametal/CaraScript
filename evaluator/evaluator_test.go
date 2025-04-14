@@ -52,6 +52,16 @@ func TestEval(t *testing.T) {
 			input: "123*456",
 			want:  "56088",
 		},
+		{
+			name:  "2つの正の整数の割り算",
+			input: "124/4",
+			want:  "31",
+		},
+		{
+			name:  "割り切れない2つの正の整数の割り算",
+			input: "123/45",
+			want:  "2",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
