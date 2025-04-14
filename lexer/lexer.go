@@ -50,29 +50,25 @@ func (l *Lexer) NextToken() Token {
 	}
 	switch l.input[l.currentPosition] {
 	case byte('+'):
-		l.currentPosition++
-		l.peekPosition++
+		l.moveNext()
 		return Token{
 			Literal: "+",
 			Type:    PLUS,
 		}
 	case byte('-'):
-		l.currentPosition++
-		l.peekPosition++
+		l.moveNext()
 		return Token{
 			Literal: "-",
 			Type:    MINUS,
 		}
 	case byte('*'):
-		l.currentPosition++
-		l.peekPosition++
+		l.moveNext()
 		return Token{
 			Literal: "*",
 			Type:    MULTI,
 		}
 	case byte('/'):
-		l.currentPosition++
-		l.peekPosition++
+		l.moveNext()
 		return Token{
 			Literal: "/",
 			Type:    DIVIDE,
@@ -93,9 +89,13 @@ func (l *Lexer) getDigits() string {
 
 func (l *Lexer) skipWhitespaces() {
 	for len(l.input) > l.currentPosition && l.input[l.currentPosition] == byte(' ') {
-		l.currentPosition++
-		l.peekPosition++
+		l.moveNext()
 	}
+}
+
+func (l *Lexer) moveNext() {
+	l.currentPosition++
+	l.peekPosition++
 }
 
 func isDigit(b byte) bool {
