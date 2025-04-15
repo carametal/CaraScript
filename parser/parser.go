@@ -127,7 +127,7 @@ func (p *RecursiveDescentParser) parseExpression() Expression {
 	for p.currentToken.Type == lexer.PLUS {
 		operator := p.currentToken.Literal
 		p.nextToken()
-		right := getIntegerLiteralAsExpression(p.currentToken.Literal)
+		right := p.parseExpression()
 		left = &InfixExpression{
 			Left:     left,
 			Operator: operator,

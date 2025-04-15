@@ -101,9 +101,9 @@ func TestParseProgram_RecursiveDescentParser(t *testing.T) {
 			want:  "123",
 		},
 		{
-			name:  "2つの正の整数の足し算",
-			input: "123+456",
-			want:  "123 + 456",
+			name:  "複数の正の整数の足し算",
+			input: "123+456+789",
+			want:  "123 + 456 + 789",
 		},
 	}
 	for _, tt := range tests {
