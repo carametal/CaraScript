@@ -103,14 +103,6 @@ func (p *SimpleParser) ParseProgram() *Program {
 	return program
 }
 
-func getIntegerLiteral(literal string) *IntegerLiteral {
-	value, err := strconv.ParseInt(literal, 10, 64)
-	if err != nil {
-		panic("strconv.ParseInt()でエラーが発生しました。")
-	}
-	return &IntegerLiteral{Value: value}
-}
-
 type RecursiveDescentParser struct {
 	l            *lexer.Lexer
 	currentToken lexer.Token
@@ -124,5 +116,40 @@ func NewRecursiveDescentParser(l *lexer.Lexer) Parser {
 }
 
 func (p *RecursiveDescentParser) ParseProgram() *Program {
-	return nil
+	return &Program{
+		Expression: p.parseExpression(),
+	}
+}
+
+func (p *RecursiveDescentParser) parseExpression() Expression {
+	left := getIntegerLiteralAsExpression(p.currentToken.Literal)
+	p.nextToken()
+	for p.currentToken.Type == lexer.PLUS {
+		operator := p.currentToken.Literal
+		p.nextToken()
+		right := getIntegerLiteralAsExpression(p.currentToken.Literal)
+		left = &InfixExpression{
+			Left:     left,
+			Operator: operator,
+			Right:    right,
+		}
+	}
+	return left
+}
+
+func (p *RecursiveDescentParser) nextToken() {
+	t := p.l.NextToken()
+	p.currentToken = t
+}
+
+func getIntegerLiteralAsExpression(literal string) Expression {
+	return getIntegerLiteral(literal)
+}
+
+func getIntegerLiteral(literal string) *IntegerLiteral {
+	value, err := strconv.ParseInt(literal, 10, 64)
+	if err != nil {
+		panic("strconv.ParseInt()でエラーが発生しました。")
+	}
+	return &IntegerLiteral{Value: value}
 }

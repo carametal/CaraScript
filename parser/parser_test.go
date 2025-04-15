@@ -85,6 +85,35 @@ func TestNewRecursiveDescentParser(t *testing.T) {
 	}
 	_, ok := p.(*RecursiveDescentParser)
 	if !ok {
-		t.Fatal("RecursiveDescentParserではありません。")
+		t.Fatal("NewRecursiveDescentParserの結果がRecursiveDescentParserではありません。")
+	}
+}
+
+func TestParseProgram_RecursiveDescentParser(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{
+			name:  "単一の整数",
+			input: "123",
+			want:  "123",
+		},
+		{
+			name:  "2つの正の整数の足し算",
+			input: "123+456",
+			want:  "123 + 456",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			l := lexer.New(tt.input)
+			p := NewRecursiveDescentParser(l)
+			program := p.ParseProgram()
+			if program.Expression.String() != tt.want {
+				t.Fatalf("program.Expression want %s, got %s", tt.want, program.Expression)
+			}
+		})
 	}
 }
