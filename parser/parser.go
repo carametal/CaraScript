@@ -55,19 +55,19 @@ func (p *Program) String() string {
 	return ""
 }
 
-type Parser struct {
+type SimpleParser struct {
 	l            *lexer.Lexer
 	currentToken lexer.Token
 }
 
-func New(l *lexer.Lexer) *Parser {
-	return &Parser{
+func New(l *lexer.Lexer) *SimpleParser {
+	return &SimpleParser{
 		l:            l,
 		currentToken: l.NextToken(),
 	}
 }
 
-func (p *Parser) ParseProgram() *Program {
+func (p *SimpleParser) ParseProgram() *Program {
 	program := &Program{}
 	for p.currentToken.Type != lexer.EOF {
 		switch p.currentToken.Type {
