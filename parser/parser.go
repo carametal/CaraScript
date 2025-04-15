@@ -124,7 +124,7 @@ func (p *RecursiveDescentParser) ParseProgram() *Program {
 func (p *RecursiveDescentParser) parseExpression() Expression {
 	left := getIntegerLiteralAsExpression(p.currentToken.Literal)
 	p.nextToken()
-	for p.currentToken.Type == lexer.PLUS {
+	for p.currentToken.Type == lexer.PLUS || p.currentToken.Type == lexer.MINUS {
 		operator := p.currentToken.Literal
 		p.nextToken()
 		right := p.parseExpression()
