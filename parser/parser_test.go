@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestNew(t *testing.T) {
+func TestNewSimpleParser(t *testing.T) {
 	l := lexer.New("1")
 	p := NewSimpleParser(l)
 	if p == nil {
