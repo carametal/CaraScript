@@ -96,7 +96,7 @@ func TestParseProgram_RecursiveDescentParser(t *testing.T) {
 		want  string
 	}{
 		{
-			name:  "単一の整数",
+			name:  "単一の正の整数",
 			input: "123",
 			want:  "123",
 		},
@@ -122,8 +122,8 @@ func TestParseProgram_RecursiveDescentParser(t *testing.T) {
 		},
 		{
 			name:  "複数の整数による混在した四則演算",
-			input: "12+34-56*78/90",
-			want:  "12 + 34 - 56 * 78 / 90",
+			input: "12+34*56-78/90",
+			want:  "12 + 34 * 56 - 78 / 90",
 		},
 	}
 	for _, tt := range tests {
