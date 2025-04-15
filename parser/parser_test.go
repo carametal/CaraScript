@@ -7,7 +7,7 @@ import (
 
 func TestNew(t *testing.T) {
 	l := lexer.New("1")
-	p := New(l)
+	p := NewSimpleParser(l)
 	if p == nil {
 		t.Fatal("Parserのインスタンス化に失敗しました。")
 	}
@@ -68,7 +68,7 @@ func TestParseProgram(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			l := lexer.New(tt.input)
-			p := New(l)
+			p := NewSimpleParser(l)
 			program := p.ParseProgram()
 			if program.Expression.String() != tt.want {
 				t.Fatalf("program.Expression want %s, got %s", tt.want, program.Expression)

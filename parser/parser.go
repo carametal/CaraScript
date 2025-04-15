@@ -55,12 +55,16 @@ func (p *Program) String() string {
 	return ""
 }
 
+type Parser interface {
+	ParseProgram() *Program
+}
+
 type SimpleParser struct {
 	l            *lexer.Lexer
 	currentToken lexer.Token
 }
 
-func New(l *lexer.Lexer) *SimpleParser {
+func NewSimpleParser(l *lexer.Lexer) Parser {
 	return &SimpleParser{
 		l:            l,
 		currentToken: l.NextToken(),

@@ -66,7 +66,7 @@ func TestEval(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			l := lexer.New(tt.input)
-			p := parser.New(l)
+			p := parser.NewSimpleParser(l)
 			got := Eval(p.ParseProgram())
 			if got.String() != tt.want {
 				t.Fatalf("Eval() want %s, got %s", tt.want, got.String())
