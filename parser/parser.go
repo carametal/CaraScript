@@ -117,17 +117,32 @@ func NewRecursiveDescentParser(l *lexer.Lexer) Parser {
 
 func (p *RecursiveDescentParser) ParseProgram() *Program {
 	return &Program{
-		Expression: p.parseExpression(),
+		Expression: p.parseAddtion(),
 	}
 }
 
-func (p *RecursiveDescentParser) parseExpression() Expression {
-	left := getIntegerLiteralAsExpression(p.currentToken.Literal)
-	p.nextToken()
+func (p *RecursiveDescentParser) parseAddtion() Expression {
+	left := p.parseMultiplication()
 	for p.currentToken.Type == lexer.PLUS || p.currentToken.Type == lexer.MINUS {
 		operator := p.currentToken.Literal
 		p.nextToken()
-		right := p.parseExpression()
+		right := p.parseMultiplication()
+		left = &InfixExpression{
+			Left:     left,
+			Operator: operator,
+			Right:    right,
+		}
+	}
+	return left
+}
+
+func (p *RecursiveDescentParser) parseMultiplication() Expression {
+	left := getIntegerLiteralAsExpression(p.currentToken.Literal)
+	p.nextToken()
+	for p.currentToken.Type == lexer.MULTI || p.currentToken.Type == lexer.DIVIDE {
+		operator := p.currentToken.Literal
+		p.nextToken()
+		right := p.parseAddtion()
 		left = &InfixExpression{
 			Left:     left,
 			Operator: operator,

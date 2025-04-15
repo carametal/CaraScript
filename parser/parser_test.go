@@ -110,6 +110,21 @@ func TestParseProgram_RecursiveDescentParser(t *testing.T) {
 			input: "987-654-321",
 			want:  "987 - 654 - 321",
 		},
+		{
+			name:  "複数の正の整数の掛け算",
+			input: "123*456*789",
+			want:  "123 * 456 * 789",
+		},
+		{
+			name:  "複数の正の整数の割り算",
+			input: "123/456/789",
+			want:  "123 / 456 / 789",
+		},
+		{
+			name:  "複数の整数による混在した四則演算",
+			input: "12+34-56*78/90",
+			want:  "12 + 34 - 56 * 78 / 90",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
