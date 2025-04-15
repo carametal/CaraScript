@@ -110,3 +110,19 @@ func getIntegerLiteral(literal string) *IntegerLiteral {
 	}
 	return &IntegerLiteral{Value: value}
 }
+
+type RecursiveDescentParser struct {
+	l            *lexer.Lexer
+	currentToken lexer.Token
+}
+
+func NewRecursiveDescentParser(l *lexer.Lexer) Parser {
+	return &RecursiveDescentParser{
+		l:            l,
+		currentToken: l.NextToken(),
+	}
+}
+
+func (p *RecursiveDescentParser) ParseProgram() *Program {
+	return nil
+}

@@ -76,3 +76,15 @@ func TestParseProgram(t *testing.T) {
 		})
 	}
 }
+
+func TestNewRecursiveDescentParser(t *testing.T) {
+	l := lexer.New("123")
+	p := NewRecursiveDescentParser(l)
+	if p == nil {
+		t.Fatal("RecursiveDescentParserのインスタンス化に失敗しました。")
+	}
+	_, ok := p.(*RecursiveDescentParser)
+	if !ok {
+		t.Fatal("RecursiveDescentParserではありません。")
+	}
+}
