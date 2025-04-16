@@ -39,7 +39,7 @@ func (il *InfixExpression) String() string {
 		return il.Operator
 	}
 	if il.Left == nil {
-		return il.Right.String()
+		return il.Operator + " " + il.Right.String()
 	}
 	return il.Left.String() + " " + il.Operator + " " + il.Right.String()
 }
@@ -93,7 +93,7 @@ func (p *RecursiveDescentParser) parseAddtion() Expression {
 }
 
 func (p *RecursiveDescentParser) parseMultiplication() Expression {
-	left := getIntegerLiteralAsExpression(p.currentToken.Literal)
+	left := p.getIntegerLiteralAsExpression()
 	p.nextToken()
 	for p.currentToken.Type == lexer.MULTI || p.currentToken.Type == lexer.DIVIDE {
 		operator := p.currentToken.Literal
@@ -113,8 +113,21 @@ func (p *RecursiveDescentParser) nextToken() {
 	p.currentToken = t
 }
 
-func getIntegerLiteralAsExpression(literal string) Expression {
-	return getIntegerLiteral(literal)
+func (p *RecursiveDescentParser) getIntegerLiteralAsExpression() Expression {
+	switch p.currentToken.Type {
+	case lexer.INT:
+		return getIntegerLiteral(p.currentToken.Literal)
+	case lexer.PLUS, lexer.MINUS:
+		operator := p.currentToken.Literal
+		p.nextToken()
+		right := p.getIntegerLiteralAsExpression()
+		return &InfixExpression{
+			Operator: operator,
+			Right:    right,
+		}
+	default:
+		panic("paser.getIntegerLiteralAsExpression()が意図しない動作をしています。")
+	}
 }
 
 func getIntegerLiteral(literal string) *IntegerLiteral {
