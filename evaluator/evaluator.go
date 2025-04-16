@@ -2,7 +2,6 @@ package evaluator
 
 import (
 	"carametal/CaraScript/parser"
-	"fmt"
 	"strconv"
 )
 
@@ -33,7 +32,6 @@ func Eval(node parser.Node) Object {
 
 func evalInfixExpression(il *parser.InfixExpression) Object {
 	var l, r int64
-	fmt.Println("***il.Left", il.Left)
 	if il.Left != nil {
 		switch ill := il.Left.(type) {
 		case *parser.InfixExpression:
@@ -47,7 +45,6 @@ func evalInfixExpression(il *parser.InfixExpression) Object {
 		l = 0
 	}
 
-	fmt.Println("***il.Right", il.Right)
 	if il.Right != nil {
 		switch ilr := il.Right.(type) {
 		case *parser.InfixExpression:
@@ -61,7 +58,6 @@ func evalInfixExpression(il *parser.InfixExpression) Object {
 		r = 0
 	}
 
-	fmt.Println("***", l, il.Operator, r)
 	switch il.Operator {
 	case "+":
 		return &Integer{

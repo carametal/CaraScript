@@ -98,7 +98,8 @@ func (p *RecursiveDescentParser) parseMultiplication() Expression {
 	for p.currentToken.Type == lexer.MULTI || p.currentToken.Type == lexer.DIVIDE {
 		operator := p.currentToken.Literal
 		p.nextToken()
-		right := p.parseAddtion()
+		right := p.getIntegerLiteralAsExpression()
+		p.nextToken()
 		left = &InfixExpression{
 			Left:     left,
 			Operator: operator,
