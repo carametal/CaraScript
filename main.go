@@ -29,7 +29,7 @@ func main() {
 
 		l := lexer.New(line)
 
-		p := parser.NewSimpleParser(l)
+		p := parser.New(l)
 		program := p.ParseProgram()
 
 		if program != nil {

@@ -64,7 +64,7 @@ type RecursiveDescentParser struct {
 	currentToken lexer.Token
 }
 
-func NewRecursiveDescentParser(l *lexer.Lexer) Parser {
+func New(l *lexer.Lexer) Parser {
 	return &RecursiveDescentParser{
 		l:            l,
 		currentToken: l.NextToken(),
