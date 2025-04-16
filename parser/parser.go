@@ -126,6 +126,13 @@ func (p *RecursiveDescentParser) getIntegerLiteralAsExpression() Expression {
 			Operator: operator,
 			Right:    right,
 		}
+	case lexer.LPAREN:
+		p.nextToken()
+		expr := p.parseAddtion()
+		if p.currentToken.Type != lexer.RPAREN {
+			panic("右括弧が見つかりません。")
+		}
+		return expr
 	default:
 		panic("paser.getIntegerLiteralAsExpression()が意図しない動作をしています。")
 	}

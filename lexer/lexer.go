@@ -12,6 +12,8 @@ const (
 	MINUS
 	MULTI
 	DIVIDE
+	LPAREN
+	RPAREN
 	EOF
 )
 
@@ -72,6 +74,18 @@ func (l *Lexer) NextToken() Token {
 		return Token{
 			Literal: "/",
 			Type:    DIVIDE,
+		}
+	case byte('('):
+		l.moveNext()
+		return Token{
+			Literal: "(",
+			Type:    LPAREN,
+		}
+	case byte(')'):
+		l.moveNext()
+		return Token{
+			Literal: ")",
+			Type:    RPAREN,
 		}
 	}
 

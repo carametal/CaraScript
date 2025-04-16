@@ -59,8 +59,13 @@ func TestEval(t *testing.T) {
 		},
 		{
 			name:  "計算すべき順序が決まっている複数の整数の四則演算",
-			input: "1+2*3",
-			want:  "7",
+			input: "1+2*3-4",
+			want:  "3",
+		},
+		{
+			name:  "括弧付きの四則演算",
+			input: "(1+2)*(3-4)",
+			want:  "-3",
 		},
 	}
 	for _, tt := range tests {
