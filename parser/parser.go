@@ -59,50 +59,6 @@ type Parser interface {
 	ParseProgram() *Program
 }
 
-type SimpleParser struct {
-	l            *lexer.Lexer
-	currentToken lexer.Token
-}
-
-func NewSimpleParser(l *lexer.Lexer) Parser {
-	return &SimpleParser{
-		l:            l,
-		currentToken: l.NextToken(),
-	}
-}
-
-func (p *SimpleParser) ParseProgram() *Program {
-	program := &Program{}
-	for p.currentToken.Type != lexer.EOF {
-		switch p.currentToken.Type {
-		case lexer.INT:
-			exp, isInfixLiteral := program.Expression.(*InfixExpression)
-			if isInfixLiteral {
-				exp.Right = getIntegerLiteral(p.currentToken.Literal)
-			} else {
-				program.Expression = getIntegerLiteral(p.currentToken.Literal)
-			}
-		case lexer.PLUS, lexer.MINUS, lexer.MULTI, lexer.DIVIDE:
-			// case lexer.PLUS:
-			left, isLeftInteger := program.Expression.(*IntegerLiteral)
-			operator := p.currentToken.Literal
-			if !isLeftInteger {
-				program.Expression = &InfixExpression{
-					Operator: operator,
-				}
-			} else {
-				program.Expression = &InfixExpression{
-					Left:     left,
-					Operator: operator,
-				}
-			}
-		}
-
-		p.currentToken = p.l.NextToken()
-	}
-	return program
-}
-
 type RecursiveDescentParser struct {
 	l            *lexer.Lexer
 	currentToken lexer.Token
