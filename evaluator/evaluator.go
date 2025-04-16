@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"carametal/CaraScript/parser"
+	"fmt"
 	"strconv"
 )
 
@@ -18,13 +19,13 @@ func (i *Integer) String() string {
 }
 
 func Eval(node parser.Node) Object {
-	switch node := node.(type) {
+	switch n := node.(type) {
 	case *parser.Program:
-		return Eval(node.Expression)
+		return Eval(n.Expression)
 	case *parser.IntegerLiteral:
-		return &Integer{Value: node.Value}
+		return &Integer{Value: n.Value}
 	case *parser.InfixExpression:
-		return evalInfixExpression(node)
+		return evalInfixExpression(n)
 	default:
 		return nil
 	}
@@ -32,14 +33,35 @@ func Eval(node parser.Node) Object {
 
 func evalInfixExpression(il *parser.InfixExpression) Object {
 	var l, r int64
-	var err error
+	fmt.Println("***il.Left", il.Left)
 	if il.Left != nil {
-		l, _ = strconv.ParseInt(il.Left.String(), 10, 64)
+		switch ill := il.Left.(type) {
+		case *parser.InfixExpression:
+			l, _ = strconv.ParseInt(evalInfixExpression(ill).String(), 10, 64)
+		case *parser.IntegerLiteral:
+			l, _ = strconv.ParseInt(ill.String(), 10, 64)
+		default:
+			panic("il.Leftが意図しない値です。il.Left=" + ill.String())
+		}
+	} else {
+		l = 0
 	}
-	r, err = strconv.ParseInt(il.Right.String(), 10, 64)
-	if err != nil {
-		panic("InfixLiteral.Rightは必須です。")
+
+	fmt.Println("***il.Right", il.Right)
+	if il.Right != nil {
+		switch ilr := il.Right.(type) {
+		case *parser.InfixExpression:
+			r, _ = strconv.ParseInt(evalInfixExpression(ilr).String(), 10, 64)
+		case *parser.IntegerLiteral:
+			r, _ = strconv.ParseInt(ilr.String(), 10, 64)
+		default:
+			panic("il.Rightが意図しない値です。il.Right=" + ilr.String())
+		}
+	} else {
+		r = 0
 	}
+
+	fmt.Println("***", l, il.Operator, r)
 	switch il.Operator {
 	case "+":
 		return &Integer{
@@ -58,6 +80,6 @@ func evalInfixExpression(il *parser.InfixExpression) Object {
 			Value: l / r,
 		}
 	default:
-		panic("Evalで意図しない挙動が発生しています。")
+		panic("Eval()で意図しない挙動が発生しています。")
 	}
 }

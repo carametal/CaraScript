@@ -28,6 +28,11 @@ func TestEval(t *testing.T) {
 			want:  "579",
 		},
 		{
+			name:  "3つの正の整数の足し算",
+			input: "123+456+789",
+			want:  "1368",
+		},
+		{
 			name:  "スペースを含む2つの正の整数の足し算",
 			input: "123 + 456",
 			want:  "579",
@@ -36,6 +41,11 @@ func TestEval(t *testing.T) {
 			name:  "2つの正の整数の引き算",
 			input: "123-24",
 			want:  "99",
+		},
+		{
+			name:  "3つの正の整数の引き算",
+			input: "789-456-123",
+			want:  "210",
 		},
 		{
 			name:  "スペースを含む2つの正の整数の引き算",
@@ -53,6 +63,11 @@ func TestEval(t *testing.T) {
 			want:  "56088",
 		},
 		{
+			name:  "3つの正の整数の掛け算",
+			input: "123*456*789",
+			want:  "44253432",
+		},
+		{
 			name:  "2つの正の整数の割り算",
 			input: "124/4",
 			want:  "31",
@@ -61,6 +76,11 @@ func TestEval(t *testing.T) {
 			name:  "割り切れない2つの正の整数の割り算",
 			input: "123/45",
 			want:  "2",
+		},
+		{
+			name:  "3つの正の整数の割り算",
+			input: "987/6/5",
+			want:  "32",
 		},
 	}
 	for _, tt := range tests {
