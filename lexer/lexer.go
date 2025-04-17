@@ -2,12 +2,14 @@ package lexer
 
 import (
 	"strconv"
+	"strings"
 )
 
 type TokenType int
 
 const (
 	INT = iota
+	FLOAT
 	PLUS
 	MINUS
 	MULTI
@@ -45,8 +47,15 @@ func (l *Lexer) NextToken() Token {
 		}
 	}
 	if isDigit(l.input[l.currentPosition]) {
+		digits := l.getDigits()
+		if strings.Contains(digits, ".") {
+			return Token{
+				Literal: digits,
+				Type:    FLOAT,
+			}
+		}
 		return Token{
-			Literal: l.getDigits(),
+			Literal: digits,
 			Type:    INT,
 		}
 	}
@@ -93,7 +102,7 @@ func (l *Lexer) NextToken() Token {
 }
 
 func (l *Lexer) getDigits() string {
-	for len(l.input) > l.peekPosition && isDigit(l.input[l.peekPosition]) {
+	for len(l.input) > l.peekPosition && (isDigit(l.input[l.peekPosition]) || l.input[l.peekPosition] == byte('.')) {
 		l.peekPosition++
 	}
 	ret := string(l.input[l.currentPosition:l.peekPosition])
