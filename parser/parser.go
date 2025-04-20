@@ -26,6 +26,18 @@ func (i *IntegerLiteral) String() string {
 	return strconv.FormatInt(i.Value, 10)
 }
 
+type FloatLiteral struct {
+	Value float64
+}
+
+func (i *FloatLiteral) expresssionNode() {
+
+}
+
+func (i *FloatLiteral) String() string {
+	return strconv.FormatFloat(i.Value, 'g', 64, 64)
+}
+
 type InfixExpression struct {
 	Left     Expression
 	Operator string
@@ -118,6 +130,8 @@ func (p *RecursiveDescentParser) getIntegerLiteralAsExpression() Expression {
 	switch p.currentToken.Type {
 	case lexer.INT:
 		return getIntegerLiteral(p.currentToken.Literal)
+	case lexer.FLOAT:
+		return getFloatLiteral(p.currentToken.Literal)
 	case lexer.PLUS, lexer.MINUS:
 		operator := p.currentToken.Literal
 		p.nextToken()
@@ -144,4 +158,12 @@ func getIntegerLiteral(literal string) *IntegerLiteral {
 		panic("strconv.ParseInt()でエラーが発生しました。")
 	}
 	return &IntegerLiteral{Value: value}
+}
+
+func getFloatLiteral(literal string) *FloatLiteral {
+	value, err := strconv.ParseFloat(literal, 64)
+	if err != nil {
+		panic("strconv.FormatFloat()でエラーが発生しました。")
+	}
+	return &FloatLiteral{Value: value}
 }

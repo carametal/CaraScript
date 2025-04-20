@@ -29,6 +29,11 @@ func TestParseProgram_RecursiveDescentParser(t *testing.T) {
 			want:  "123",
 		},
 		{
+			name:  "単一の正の少数",
+			input: "1234.5",
+			want:  "1234.5",
+		},
+		{
 			name:  "プラストークンと単一の正の整数",
 			input: "+123",
 			want:  "+ 123",
