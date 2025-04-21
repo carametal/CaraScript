@@ -18,6 +18,11 @@ func TestEval(t *testing.T) {
 			want:  "123",
 		},
 		{
+			name:  "単一の正の小数",
+			input: "1.5",
+			want:  "1.5",
+		},
+		{
 			name:  "+と単一の整数",
 			input: "+123",
 			want:  "123",
@@ -48,14 +53,9 @@ func TestEval(t *testing.T) {
 			want:  "44253432",
 		},
 		{
-			name:  "割り切れない2つの正の整数の割り算",
-			input: "123/45",
-			want:  "2",
-		},
-		{
 			name:  "3つの正の整数の割り算",
-			input: "987/6/5",
-			want:  "32",
+			input: "81/9/3",
+			want:  "3",
 		},
 		{
 			name:  "計算すべき順序が決まっている複数の整数の四則演算",
