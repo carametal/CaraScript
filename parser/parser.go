@@ -73,11 +73,11 @@ func New(l *lexer.Lexer) Parser {
 
 func (p *RecursiveDescentParser) ParseProgram() *Program {
 	return &Program{
-		Expression: p.parseAddtion(),
+		Expression: p.parseAddition(),
 	}
 }
 
-func (p *RecursiveDescentParser) parseAddtion() Expression {
+func (p *RecursiveDescentParser) parseAddition() Expression {
 	left := p.parseMultiplication()
 	for p.currentToken.Type == lexer.PLUS || p.currentToken.Type == lexer.MINUS {
 		operator := p.currentToken.Literal
@@ -128,7 +128,7 @@ func (p *RecursiveDescentParser) getIntegerLiteralAsExpression() Expression {
 		}
 	case lexer.LPAREN:
 		p.nextToken()
-		expr := p.parseAddtion()
+		expr := p.parseAddition()
 		if p.currentToken.Type != lexer.RPAREN {
 			panic("右括弧が見つかりません。")
 		}

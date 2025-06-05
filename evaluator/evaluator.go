@@ -72,6 +72,9 @@ func evalInfixExpression(il *parser.InfixExpression) Object {
 			Value: l * r,
 		}
 	case "/":
+		if r == 0 {
+			panic("0除算が発生しました")
+		}
 		return &Integer{
 			Value: l / r,
 		}
