@@ -113,8 +113,13 @@ func (l *Lexer) getNumber() string {
 }
 
 func (l *Lexer) skipWhitespaces() {
-	for len(l.input) > l.currentPosition && l.input[l.currentPosition] == byte(' ') {
-		l.moveNext()
+	for len(l.input) > l.currentPosition {
+		switch l.input[l.currentPosition] {
+		case byte(' '), '\n', '\t', '\r':
+			l.moveNext()
+		default:
+			return
+		}
 	}
 }
 

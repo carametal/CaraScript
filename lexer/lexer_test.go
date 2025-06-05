@@ -44,6 +44,12 @@ func TestNextToken(t *testing.T) {
 			wantLiteral:   "1.23",
 		},
 		{
+			name:          "改行を含む小数",
+			input:         "1.23\n",
+			wantTokenType: FLOAT,
+			wantLiteral:   "1.23",
+		},
+		{
 			name:          "単一のプラストークン",
 			input:         "+",
 			wantTokenType: PLUS,
@@ -107,6 +113,11 @@ func TestGetNumbers(t *testing.T) {
 		{
 			name:  "小数",
 			input: "1.23",
+			want:  "1.23",
+		},
+		{
+			name:  "改行を含む小数",
+			input: "1.23\n",
 			want:  "1.23",
 		},
 	}
