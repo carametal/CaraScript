@@ -79,3 +79,15 @@ func TestEval(t *testing.T) {
 		})
 	}
 }
+
+func TestEval_DivideByZero(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("ゼロによる除算でpanicが発生しませんでした")
+		}
+	}()
+
+	l := lexer.New("1/0")
+	p := parser.New(l)
+	Eval(p.ParseProgram())
+}
