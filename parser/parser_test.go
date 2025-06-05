@@ -59,6 +59,11 @@ func TestParseProgram_RecursiveDescentParser(t *testing.T) {
 			want:  "123 / 456 / 789",
 		},
 		{
+			name:  "小数の計算",
+			input: "1.5+2.5",
+			want:  "1.5 + 2.5",
+		},
+		{
 			name:  "複数の整数による混在した四則演算",
 			input: "12+34*56-78/90",
 			want:  "12 + 34 * 56 - 78 / 90",
