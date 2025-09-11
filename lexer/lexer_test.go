@@ -38,6 +38,18 @@ func TestNextToken(t *testing.T) {
 			wantLiteral:   "12",
 		},
 		{
+			name:          "小数",
+			input:         "1.23",
+			wantTokenType: FLOAT,
+			wantLiteral:   "1.23",
+		},
+		{
+			name:          "改行を含む小数",
+			input:         "1.23\n",
+			wantTokenType: FLOAT,
+			wantLiteral:   "1.23",
+		},
+		{
 			name:          "単一のプラストークン",
 			input:         "+",
 			wantTokenType: PLUS,
@@ -77,7 +89,7 @@ func TestNextToken(t *testing.T) {
 	}
 }
 
-func TestGetDisits(t *testing.T) {
+func TestGetNumbers(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
@@ -98,14 +110,24 @@ func TestGetDisits(t *testing.T) {
 			input: "123",
 			want:  "123",
 		},
+		{
+			name:  "小数",
+			input: "1.23",
+			want:  "1.23",
+		},
+		{
+			name:  "改行を含む小数",
+			input: "1.23\n",
+			want:  "1.23",
+		},
 	}
 
 	for _, tt := range tests {
 		l := New(tt.input)
 		t.Run(tt.name, func(t *testing.T) {
-			got := l.getDigits()
+			got := l.getNumber()
 			if got != tt.want {
-				t.Fatalf("getDigits() want %s, got %s", tt.want, got)
+				t.Fatalf("getNumber() want %s, got %s", tt.want, got)
 			}
 		})
 	}

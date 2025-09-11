@@ -14,16 +14,16 @@ type Expression interface {
 	expresssionNode()
 }
 
-type IntegerLiteral struct {
-	Value int64
+type NumberLiteral struct {
+	Value float64
 }
 
-func (i *IntegerLiteral) expresssionNode() {
+func (i *NumberLiteral) expresssionNode() {
 
 }
 
-func (i *IntegerLiteral) String() string {
-	return strconv.FormatInt(i.Value, 10)
+func (i *NumberLiteral) String() string {
+	return strconv.FormatFloat(i.Value, 'f', -1, 64)
 }
 
 type InfixExpression struct {
@@ -93,12 +93,12 @@ func (p *RecursiveDescentParser) parseAddition() Expression {
 }
 
 func (p *RecursiveDescentParser) parseMultiplication() Expression {
-	left := p.getIntegerLiteralAsExpression()
+	left := p.getNumberLiteralAsExpression()
 	p.nextToken()
 	for p.currentToken.Type == lexer.MULTI || p.currentToken.Type == lexer.DIVIDE {
 		operator := p.currentToken.Literal
 		p.nextToken()
-		right := p.getIntegerLiteralAsExpression()
+		right := p.getNumberLiteralAsExpression()
 		p.nextToken()
 		left = &InfixExpression{
 			Left:     left,
@@ -114,14 +114,14 @@ func (p *RecursiveDescentParser) nextToken() {
 	p.currentToken = t
 }
 
-func (p *RecursiveDescentParser) getIntegerLiteralAsExpression() Expression {
+func (p *RecursiveDescentParser) getNumberLiteralAsExpression() Expression {
 	switch p.currentToken.Type {
-	case lexer.INT:
-		return getIntegerLiteral(p.currentToken.Literal)
+	case lexer.INT, lexer.FLOAT:
+		return getNumberLiteral(p.currentToken.Literal)
 	case lexer.PLUS, lexer.MINUS:
 		operator := p.currentToken.Literal
 		p.nextToken()
-		right := p.getIntegerLiteralAsExpression()
+		right := p.getNumberLiteralAsExpression()
 		return &InfixExpression{
 			Operator: operator,
 			Right:    right,
@@ -134,14 +134,14 @@ func (p *RecursiveDescentParser) getIntegerLiteralAsExpression() Expression {
 		}
 		return expr
 	default:
-		panic("paser.getIntegerLiteralAsExpression()が意図しない動作をしています。")
+		panic("paser.getNumberLiteralAsExpression()が意図しない動作をしています。")
 	}
 }
 
-func getIntegerLiteral(literal string) *IntegerLiteral {
-	value, err := strconv.ParseInt(literal, 10, 64)
+func getNumberLiteral(literal string) *NumberLiteral {
+	value, err := strconv.ParseFloat(literal, 64)
 	if err != nil {
-		panic("strconv.ParseInt()でエラーが発生しました。")
+		panic("strconv.ParseFloat()でエラーが発生しました。")
 	}
-	return &IntegerLiteral{Value: value}
+	return &NumberLiteral{Value: value}
 }
